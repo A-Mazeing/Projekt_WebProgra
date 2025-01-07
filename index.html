@@ -1,0 +1,40 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+<form id="searchForm" action="suchergebnis.php" method="get">
+  <label for="search">Bitte gesuchten Artikel eingeben:</label>
+  <input type="text" id="search" name="search">
+  <label for="kundennummer">Kundennummer:</label>
+  <input type="number" id="kundennummer" name="kundennummer" required>
+  <button type="submit">Suchergebnis</button>
+</form>
+<form id="anzeigenForm" action="Anzeigen.php" method="get">
+  <input type="hidden" id="kundennummerAnzeigen" name="kundennummer">
+  <button type="submit">Anzeigen</button>
+</form>
+<button id="leerenButton">Leeren</button>
+
+<script>
+  document.getElementById('searchForm').addEventListener('submit', function() {
+    document.getElementById('kundennummerAnzeigen').value = document.getElementById('kundennummer').value;
+  });
+
+  document.getElementById('anzeigenForm').addEventListener('submit', function() {
+    document.getElementById('kundennummerAnzeigen').value = document.getElementById('kundennummer').value;
+  });
+
+  document.getElementById('leerenButton').addEventListener('click', function() {
+    const kundennummer = document.getElementById('kundennummer').value;
+    if (kundennummer) {
+      window.location.href = 'leeren.php?kundennummer=' + encodeURIComponent(kundennummer);
+    } else {
+      alert('Bitte geben Sie eine Kundennummer ein.');
+    }
+  });
+</script>
+</body>
+</html>
