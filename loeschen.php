@@ -18,11 +18,24 @@ try {
     $st = $db->prepare("DELETE FROM bestellung WHERE ArtikelNr = :Artikelnummer");
     $st->execute(array(':Artikelnummer' => $Artikelnummer));
 
+    echo "<!DOCTYPE html>";
+    echo "<html lang='en'>";
+    echo "<head>";
+    echo "<meta charset='UTF-8'>";
+    echo "<title>Artikel löschen</title>";
+    echo "<link rel='stylesheet' href='style.css'>";
+    echo "</head>";
+    echo "<body>";
+    echo "<div class='container'>";
     if ($st->rowCount() > 0) {
         echo "Artikel erfolgreich aus dem Warenkorb gelöscht.";
     } else {
         echo "Artikel konnte nicht gefunden werden.";
     }
+    echo "<button onclick=\"window.location.href='index.html'\">Zurück</button>";
+    echo "</div>";
+    echo "</body>";
+    echo "</html>";
 } catch (PDOException $e) {
     echo "Verbindung fehlgeschlagen: " . $e->getMessage();
 }

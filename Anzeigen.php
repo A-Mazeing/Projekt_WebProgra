@@ -22,6 +22,15 @@ try {
     $st->execute(array(':KundenNummer' => $KundenNummer));
     $bestellungen = $st->fetchAll(PDO::FETCH_ASSOC);
 
+    echo "<!DOCTYPE html>";
+    echo "<html lang='en'>";
+    echo "<head>";
+    echo "<meta charset='UTF-8'>";
+    echo "<title>Warenkorb anzeigen</title>";
+    echo "<link rel='stylesheet' href='style.css'>";
+    echo "</head>";
+    echo "<body>";
+    echo "<div class='container'>";
     if (count($bestellungen) > 0) {
         echo "<table border='1'>";
         echo "<tr>";
@@ -43,8 +52,11 @@ try {
     } else {
         echo "Es befinden sich keine Artikel im Warenkorb";
     }
+    echo "<button onclick=\"window.location.href='index.html'\">Zurück</button>";
+    echo "</div>";
+    echo "</body>";
+    echo "</html>";
 } catch (PDOException $e) {
     echo "Verbindung fehlgeschlagen: " . $e->getMessage();
 }
-echo '<button onclick="window.location.href=\'index.html\'">Zurück</button>';
 ?>

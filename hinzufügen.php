@@ -16,18 +16,27 @@ try {
     if ($st->execute(array(':Artikelnummer' => $Artikelnummer))) {
         $rows = $st->rowCount();
         $cols = $st->columnCount();
+        echo "<!DOCTYPE html>";
+        echo "<html lang='en'>";
+        echo "<head>";
+        echo "<meta charset='UTF-8'>";
+        echo "<title>Artikel hinzufügen</title>";
+        echo "<link rel='stylesheet' href='style.css'>";
+        echo "</head>";
+        echo "<body>";
+        echo "<div class='container'>";
         if ($rows > 0) {
             echo "<table border='1'>";
             echo "<tr>";
             for ($i = 0; $i < $cols; $i++) {
                 $meta = $st->getColumnMeta($i);
-                echo "<th>" . $meta['name'] . "</th>";
+                echo "<th>" . htmlspecialchars($meta['name']) . "</th>";
             }
             echo "</tr>";
             foreach ($st as $erg) {
                 echo "<tr>";
                 for ($i = 0; $i < $cols; $i++) {
-                    echo "<td>" . $erg[$i] . "</td>";
+                    echo "<td>" . htmlspecialchars($erg[$i]) . "</td>";
                 }
                 echo "</tr>";
             }
@@ -35,6 +44,16 @@ try {
         } else {
             echo "Abfrage liefert keine Datensätze";
         }
+        echo "<form action='fertig.php' method='post'>";
+        echo "<input type='hidden' name='Artikelnummer' value='" . htmlspecialchars($Artikelnummer) . "'>";
+        echo "<input type='hidden' name='kundennummer' value='" . htmlspecialchars($KundenNummer) . "'>";
+        echo "<label for='menge'>Menge:</label>";
+        echo "<input type='number' id='menge' name='menge' required>";
+        echo "<button type='submit'>Bestellen</button>";
+        echo "</form>";
+        echo "</div>";
+        echo "</body>";
+        echo "</html>";
     } else {
         echo "Datenbankaufruf fehlgeschlagen";
     }
@@ -42,11 +61,3 @@ try {
     echo "Verbindung fehlgeschlagen: " . $e->getMessage();
 }
 ?>
-
-<form action="fertig.php" method="post">
-    <input type="hidden" name="Artikelnummer" value="<?php echo htmlspecialchars($Artikelnummer); ?>">
-    <input type="hidden" name="kundennummer" value="<?php echo htmlspecialchars($KundenNummer); ?>">
-    <label for="menge">Menge:</label>
-    <input type="number" id="menge" name="menge" required>
-    <button type="submit">Bestellen</button>
-</form>

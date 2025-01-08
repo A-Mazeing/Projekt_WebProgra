@@ -18,12 +18,24 @@ try {
     // SQL-Abfrage vorbereiten, um alle Einträge mit der Kundennummer zu löschen
     $st = $db->prepare("DELETE FROM bestellung WHERE KundenNr = :KundenNummer");
     if ($st->execute(array(':KundenNummer' => $KundenNummer))) {
+        echo "<!DOCTYPE html>";
+        echo "<html lang='en'>";
+        echo "<head>";
+        echo "<meta charset='UTF-8'>";
+        echo "<title>Warenkorb leeren</title>";
+        echo "<link rel='stylesheet' href='style.css'>";
+        echo "</head>";
+        echo "<body>";
+        echo "<div class='container'>";
         echo "Inhalt des Warenkorbs wurde vollständig gelöscht.";
+        echo "<button onclick=\"window.location.href='index.html'\">Zurück</button>";
+        echo "</div>";
+        echo "</body>";
+        echo "</html>";
     } else {
         echo "Datenbankaufruf fehlgeschlagen";
     }
 } catch (PDOException $e) {
     echo "Verbindung fehlgeschlagen: " . $e->getMessage();
 }
-echo '<button onclick="window.location.href=\'index.html\'">Zurück</button>';
 ?>

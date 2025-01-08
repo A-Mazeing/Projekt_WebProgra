@@ -27,6 +27,15 @@ try {
     $st->execute(array(':Artikelnummer' => $Artikelnummer));
     $artikel = $st->fetch(PDO::FETCH_ASSOC);
 
+    echo "<!DOCTYPE html>";
+    echo "<html lang='en'>";
+    echo "<head>";
+    echo "<meta charset='UTF-8'>";
+    echo "<title>Bestellung</title>";
+    echo "<link rel='stylesheet' href='style.css'>";
+    echo "</head>";
+    echo "<body>";
+    echo "<div class='container'>";
     echo "Bestellung erfolgreich hinzugefügt.<br>";
     echo "<table border='1'>";
     echo "<tr><th>Artikelnummer</th><td>" . htmlspecialchars($artikel['ArtikelNr']) . "</td></tr>";
@@ -41,8 +50,11 @@ try {
     echo "<tr><th>Menge</th><td>" . htmlspecialchars($Menge) . "</td></tr>";
     echo "<tr><th>Bestelldatum</th><td>" . htmlspecialchars($BestellDatum) . "</td></tr>";
     echo "</table>";
+    echo "<button onclick=\"window.location.href='index.html'\">Zurück</button>";
+    echo "</div>";
+    echo "</body>";
+    echo "</html>";
 } catch (PDOException $e) {
     echo "Verbindung fehlgeschlagen: " . $e->getMessage();
 }
-echo '<button onclick="window.location.href=\'index.html\'">Zurück</button>';
 ?>

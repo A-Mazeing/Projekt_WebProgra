@@ -16,27 +16,41 @@ try {
     if ($st->execute(array(':AName' => $AName . "%"))) {
         $rows = $st->rowCount();
         $cols = $st->columnCount();
+        echo "<!DOCTYPE html>";
+        echo "<html lang='en'>";
+        echo "<head>";
+        echo "<meta charset='UTF-8'>";
+        echo "<title>Suchergebnis</title>";
+        echo "<link rel='stylesheet' href='style.css'>";
+        echo "</head>";
+        echo "<body>";
+        echo "<div class='container'>";
+        echo "<h1>Suchergebnis</h1>";
         if ($rows > 0) {
             echo "<table border='1'>";
             echo "<tr>";
             for ($i = 0; $i < $cols; $i++) {
                 $meta = $st->getColumnMeta($i);
-                echo "<th>" . $meta['name'] . "</th>";
+                echo "<th>" . htmlspecialchars($meta['name']) . "</th>";
             }
             echo "<th>&nbsp;</th>";
             echo "</tr>";
             foreach ($st as $erg) {
                 echo "<tr>";
                 for ($i = 0; $i < $cols; $i++) {
-                    echo "<td>" . $erg[$i] . "</td>";
+                    echo "<td>" . htmlspecialchars($erg[$i]) . "</td>";
                 }
-                echo "<td><a href='hinzufügen.php?Artikelnummer=" . $erg[0] . "&kundennummer=" . $KundenNummer . "'>In den Warenkorb</a></td>";
+                echo "<td><a href='hinzufügen.php?Artikelnummer=" . htmlspecialchars($erg[0]) . "&kundennummer=" . htmlspecialchars($KundenNummer) . "'>In den Warenkorb</a></td>";
                 echo "</tr>";
             }
             echo "</table>";
         } else {
-            echo "Abfrage liefert keine Datensätze";
+            echo "<p>Abfrage liefert keine Datensätze</p>";
         }
+        echo "<button onclick=\"window.location.href='index.html'\">Zurück</button>";
+        echo "</div>";
+        echo "</body>";
+        echo "</html>";
     } else {
         echo "Datenbankaufruf fehlgeschlagen";
     }
