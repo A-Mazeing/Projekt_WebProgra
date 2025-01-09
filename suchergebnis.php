@@ -8,14 +8,15 @@ $KundenNummer = isset($_GET['kundennummer']) ? $_GET['kundennummer'] : '';
 
 // Verbindung zur Datenbank herstellen
 try {
-    $db = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
-    $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $datenbank = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+    $datenbank->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     // SQL-Abfrage vorbereiten
-    $st = $db->prepare("SELECT * FROM artikel WHERE Bezeichnung LIKE :AName");
-    if ($st->execute(array(':AName' => $AName . "%"))) {
-        $rows = $st->rowCount();
-        $cols = $st->columnCount();
+    $abfrageErgebnis = $datenbank->prepare("SELECT * FROM artikel WHERE Bezeichnung LIKE :AName");
+    // vorbereitete SQL-Abfrage ausführen und den Suchbegriff als Parameter übergeben
+    if ($abfrageErgebnis->execute(array(':AName' => $AName . "%"))) {
+        $rows = $abfrageErgebnis->rowCount();
+        $cols = $abfrageErgebnis->columnCount();
         echo "<!DOCTYPE html>";
         echo "<html lang='en'>";
         echo "<head>";
@@ -30,12 +31,12 @@ try {
             echo "<table border='1'>";
             echo "<tr>";
             for ($i = 0; $i < $cols; $i++) {
-                $meta = $st->getColumnMeta($i);
+                $meta = $abfrageErgebnis->getColumnMeta($i);
                 echo "<th>" . htmlspecialchars($meta['name']) . "</th>";
             }
             echo "<th>&nbsp;</th>";
             echo "</tr>";
-            foreach ($st as $erg) {
+            foreach ($abfrageErgebnis as $erg) {
                 echo "<tr>";
                 for ($i = 0; $i < $cols; $i++) {
                     echo "<td>" . htmlspecialchars($erg[$i]) . "</td>";
