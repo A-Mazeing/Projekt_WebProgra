@@ -23,7 +23,7 @@ try {
     ));
 
     // SQL-Abfrage vorbereiten, um die Artikeldetails abzurufen
-    $st = $db->prepare("SELECT ArtikelNr, Bezeichnung, Hersteller, Füllmenge, Preis, Kategorie, Mindestbestand, Bestellmenge, Liefereinheit FROM artikel WHERE ArtikelNr = :Artikelnummer");
+    $st = $db->prepare("SELECT ArtikelNr, Bezeichnung, Hersteller, 'Füllmenge in floz', 'Preis in €', Kategorie, Mindestbestand, Bestellmenge, Liefereinheit FROM artikel WHERE ArtikelNr = :Artikelnummer");
     $st->execute(array(':Artikelnummer' => $Artikelnummer));
     $artikel = $st->fetch(PDO::FETCH_ASSOC);
 
@@ -38,17 +38,21 @@ try {
     echo "<div class='container'>";
     echo "Bestellung erfolgreich hinzugefügt.<br>";
     echo "<table border='1'>";
-    echo "<tr><th>Artikelnummer</th><td>" . htmlspecialchars($artikel['ArtikelNr']) . "</td></tr>";
-    echo "<tr><th>Bezeichnung</th><td>" . htmlspecialchars($artikel['Bezeichnung']) . "</td></tr>";
-    echo "<tr><th>Hersteller</th><td>" . htmlspecialchars($artikel['Hersteller']) . "</td></tr>";
-    echo "<tr><th>Füllmenge</th><td>" . htmlspecialchars($artikel['Füllmenge']) . "</td></tr>";
-    echo "<tr><th>Preis</th><td>" . htmlspecialchars($artikel['Preis']) . "</td></tr>";
-    echo "<tr><th>Kategorie</th><td>" . htmlspecialchars($artikel['Kategorie']) . "</td></tr>";
-    echo "<tr><th>Mindestbestand</th><td>" . htmlspecialchars($artikel['Mindestbestand']) . "</td></tr>";
-    echo "<tr><th>Bestellmenge</th><td>" . htmlspecialchars($artikel['Bestellmenge']) . "</td></tr>";
-    echo "<tr><th>Liefereinheit</th><td>" . htmlspecialchars($artikel['Liefereinheit']) . "</td></tr>";
-    echo "<tr><th>Menge</th><td>" . htmlspecialchars($Menge) . "</td></tr>";
-    echo "<tr><th>Bestelldatum</th><td>" . htmlspecialchars($BestellDatum) . "</td></tr>";
+    echo "<tr>";
+    for ($i = 0; $i < $st->columnCount(); $i++) {
+        $meta = $st->getColumnMeta($i);
+        echo "<th>" . htmlspecialchars($meta['name']) . "</th>";
+    }
+    echo "<th>Menge</th>";
+    echo "<th>Bestelldatum</th>";
+    echo "</tr>";
+    echo "<tr>";
+    foreach ($artikel as $value) {
+        echo "<td>" . htmlspecialchars($value) . "</td>";
+    }
+    echo "<td>" . htmlspecialchars($Menge) . "</td>";
+    echo "<td>" . htmlspecialchars($BestellDatum) . "</td>";
+    echo "</tr>";
     echo "</table>";
     echo "<button onclick=\"window.location.href='index.html'\">Zurück</button>";
     echo "</div>";

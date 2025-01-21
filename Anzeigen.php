@@ -15,7 +15,7 @@ try {
     $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     // SQL-Abfrage vorbereiten, um alle Bestellungen für die Kundennummer abzurufen
-    $st = $db->prepare("SELECT bestellung.ArtikelNr, artikel.Bezeichnung AS Artikelname, artikel.Preis AS Einzelpreis, bestellung.Menge AS Bestellmenge
+    $st = $db->prepare("SELECT bestellung.BestellNr, bestellung.ArtikelNr, artikel.Bezeichnung AS Artikelname, artikel.`Preis in €` AS Einzelpreis, bestellung.Menge AS Bestellmenge
                         FROM bestellung
                         INNER JOIN artikel ON bestellung.ArtikelNr = artikel.ArtikelNr
                         WHERE bestellung.KundenNr = :KundenNummer");
@@ -34,10 +34,13 @@ try {
     if (count($bestellungen) > 0) {
         echo "<table border='1'>";
         echo "<tr>";
+        // Dynamisch die Tabellenköpfe auslesen
         for ($i = 0; $i < $st->columnCount(); $i++) {
             $meta = $st->getColumnMeta($i);
             echo "<th>" . htmlspecialchars($meta['name']) . "</th>";
         }
+        echo "<th>Neue Menge</th>";
+        echo "<th>Aktualisieren</th>";
         echo "<th>&nbsp;</th>";
         echo "</tr>";
         foreach ($bestellungen as $bestellung) {
@@ -45,6 +48,8 @@ try {
             foreach ($bestellung as $value) {
                 echo "<td>" . htmlspecialchars($value) . "</td>";
             }
+            echo "<td><form method='post' action='aktualisieren.php'><input type='number' name='neueMenge' min='1' required></td>";
+            echo "<td><input type='hidden' name='BestellNr' value='" . htmlspecialchars($bestellung['BestellNr']) . "'><input type='hidden' name='KundenNummer' value='" . htmlspecialchars($KundenNummer) . "'><button type='submit'>Aktualisieren</button></form></td>";
             echo "<td><a href='loeschen.php?Artikelnummer=" . htmlspecialchars($bestellung['ArtikelNr']) . "'>Aus Warenkorb löschen</a></td>";
             echo "</tr>";
         }

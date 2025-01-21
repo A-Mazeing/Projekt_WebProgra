@@ -1,10 +1,11 @@
 ﻿# Projekt Dokumentation
 
 ## TODO Liste
-- [ ] Get to Post 
+- [ ] Dokumentation durchlesen
+- [X] Get to Post 
 - [ ] Erstellen von einem Plan
 - [ ] Erstellen ER Diagramm
-- [ ] Erweitern der Datenbank
+- [X] Erweitern der Datenbank
 - [X] index.html auskommentieren
 - [X] fertig.php auskommentieren
 - [X] suchergebnis.php auskommentieren

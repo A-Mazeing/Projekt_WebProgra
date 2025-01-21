@@ -12,7 +12,7 @@ try {
     $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     // SQL-Abfrage vorbereiten, um den Artikel abzurufen
-    $st = $db->prepare("SELECT ArtikelNr, Bezeichnung, Hersteller, Füllmenge, Preis, Kategorie, Mindestbestand, Bestellmenge, Liefereinheit FROM artikel WHERE ArtikelNr = :Artikelnummer");
+    $st = $db->prepare("SELECT ArtikelNr, Bezeichnung, Hersteller, 'Füllmenge in floz', 'Preis in €', Kategorie, Mindestbestand, Bestellmenge, Liefereinheit FROM artikel WHERE ArtikelNr = :Artikelnummer");
     if ($st->execute(array(':Artikelnummer' => $Artikelnummer))) {
         $rows = $st->rowCount();
         $cols = $st->columnCount();
